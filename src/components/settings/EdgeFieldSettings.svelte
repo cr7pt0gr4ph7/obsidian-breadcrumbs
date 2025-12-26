@@ -10,9 +10,9 @@
 		plugin: BreadcrumbsPlugin;
 	}
 
-	let { plugin = $bindable() }: Props = $props();
+	let { plugin }: Props = $props();
 
-	const settings = $state(plugin.settings);
+	let settings = $state(plugin.settings);
 
 	let filters = $state({
 		fields: "",
@@ -31,6 +31,7 @@
 
 			// NOTE: saveSettings() resets the dirty flag, but now we have to tell Svelte to react
 			plugin = plugin;
+			settings = plugin.settings;
 		},
 
 		fields: {
