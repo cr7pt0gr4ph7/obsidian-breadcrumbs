@@ -88,7 +88,10 @@ export default class BreadcrumbsPlugin extends Plugin {
 				this.app.metadataTypeManager.getAllProperties();
 
 			for (const field of this.settings.edge_fields) {
-				if (all_properties[field.label]?.type === "multitext") continue;
+				if (
+					all_properties[field.label]?.type === "multitext" ||
+					all_properties[field.label]?.type === "text"
+				) continue;
 				await this.app.metadataTypeManager.setType(
 					field.label,
 					"multitext",
