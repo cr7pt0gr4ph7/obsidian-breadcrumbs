@@ -13,6 +13,7 @@ export const METADATA_FIELDS_LIST = [
 	"BC-folder-note-recurse",
 	//
 	"BC-list-note-field",
+	"BC-list-note-field-override",
 	"BC-list-note-neighbour-field",
 	"BC-list-note-exclude-index",
 	//
@@ -65,6 +66,9 @@ export const METADATA_FIELDS_MAP: Record<
 	"BC-list-note-field": {
 		property_type: "text",
 	},
+	"BC-list-note-field-override": {
+		property_type: "checkbox",
+	},
 	"BC-list-note-neighbour-field": {
 		property_type: "text",
 	},
@@ -108,6 +112,7 @@ export const META_ALIAS = {
 	"folder-note-recurse": "BC-folder-note-recurse",
 	//
 	"list-note-field": "BC-list-note-field",
+	"list-note-field-override": "BC-list-note-field-override",
 	"list-note-neighbour-field": "BC-list-note-neighbour-field",
 	"list-note-exclude-index": "BC-list-note-exclude-index",
 	//

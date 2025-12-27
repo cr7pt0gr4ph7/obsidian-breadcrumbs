@@ -36,6 +36,10 @@ const get_list_note_info = (
 		});
 	}
 
+	const field_override = Boolean(
+		metadata[META_ALIAS["list-note-field-override"]] ?? true,
+	);
+
 	const neighbour_field =
 		metadata[META_ALIAS["list-note-neighbour-field"]] ??
 		plugin.settings.explicit_edge_sources.list_note.default_neighbour_field;
@@ -68,6 +72,7 @@ const get_list_note_info = (
 
 	return succ({
 		field,
+		field_override,
 		exclude_index,
 		neighbour_field: (neighbour_field ?? undefined) as string | undefined,
 	});
@@ -259,31 +264,37 @@ export const _add_explicit_edges_list_note: ExplicitEdgeBuilder = (
 					!list_note_info.data.exclude_index &&
 					source_list_item.position.start.col === 0
 				) {
-					// Override top-level field
-					const source_override_field = resolve_field_override(
-						plugin,
-						source_list_item,
-						list_note_page.file.path,
-					);
+					let field = list_note_info.data.field;
 
-					if (!source_override_field.ok) {
-						if (source_override_field.error) {
-							results.errors.push(source_override_field.error);
+					// Override top-level field
+					if (list_note_info.data.field_override) {
+						const source_override_field = resolve_field_override(
+							plugin,
+							source_list_item,
+							list_note_page.file.path,
+						);
+
+						if (!source_override_field.ok) {
+							if (source_override_field.error) {
+								results.errors.push(source_override_field.error);
+							}
+							return;
 						}
-						return;
+
+						field = source_override_field.data?.field ?? field;
 					}
 
 					results.edges.push(
 						new GCEdgeData(
 							list_note_page.file.path,
 							source_path,
-							source_override_field.data?.field ?? list_note_info.data.field,
+							field,
 							"list_note",
 						),
 					);
 				}
 
-				// NOTE: The logic of this function is _just_ complicated enough to warrent a separate function
+				// NOTE: The logic of this function is _just_ complicated enough to warrant a separate function
 				// to prevent multiple levels of if statement nesting
 				if (list_note_info.data.neighbour_field) {
 					handle_neighbour_list_item({
@@ -300,17 +311,23 @@ export const _add_explicit_edges_list_note: ExplicitEdgeBuilder = (
 					const target_link = target_list_item.outlinks.at(0);
 					if (!target_link) return;
 
-					const target_override_field = resolve_field_override(
-						plugin,
-						target_list_item,
-						list_note_page.file.path,
-					);
+					let field = list_note_info.data.field;
 
-					if (!target_override_field.ok) {
-						if (target_override_field.error) {
-							results.errors.push(target_override_field.error);
+					if (list_note_info.data.field_override) {
+						const target_override_field = resolve_field_override(
+							plugin,
+							target_list_item,
+							list_note_page.file.path,
+						);
+
+						if (!target_override_field.ok) {
+							if (target_override_field.error) {
+								results.errors.push(target_override_field.error);
+							}
+							return;
 						}
-						return;
+
+						field = target_override_field.data?.field ?? field;
 					}
 
 					const [target_path, target_file] =
@@ -340,7 +357,7 @@ export const _add_explicit_edges_list_note: ExplicitEdgeBuilder = (
 						new GCEdgeData(
 							source_path,
 							target_path,
-							target_override_field.data?.field ?? list_note_info.data.field,
+							field,
 							"list_note",
 						),
 					);
