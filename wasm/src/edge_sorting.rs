@@ -16,6 +16,7 @@ pub enum SortField {
     Basename,
     EdgeType,
     Implied,
+    GraphOrder(String),
     Neighbour(String),
 }
 
@@ -30,6 +31,9 @@ impl FromStr for SortField {
             "explicit" => Ok(SortField::Implied),
             s if s.starts_with("neighbour-field:") => Ok(SortField::Neighbour(
                 s["neighbour-field:".len()..].to_string(),
+            )),
+            s if s.starts_with("graph-order-field:") => Ok(SortField::GraphOrder(
+                s["graph-order-field:".len()..].to_string(),
             )),
             _ => Err(NoteGraphError::new("Invalid sort field")),
         }
@@ -125,6 +129,9 @@ impl EdgeSorter {
             SortField::Basename => BasenameComparer.into(),
             SortField::EdgeType => EdgeTypeComparer.into(),
             SortField::Implied => ImpliedComparer.into(),
+            SortField::GraphOrder(edge_field) => {
+                GraphOrderComparer::new(edge_field).into()
+            }
             SortField::Neighbour(neighbour_field) => {
                 NeighbourComparer::new(neighbour_field).into()
             }
@@ -168,6 +175,7 @@ pub enum Comparer {
     BasenameComparer,
     EdgeTypeComparer,
     ImpliedComparer,
+    GraphOrdering(GraphOrderComparer),
     NeighbourOrdering(NeighbourComparer),
 }
 
@@ -259,6 +267,35 @@ impl EdgeComparer for NeighbourComparer {
             (Some(_), None) => std::cmp::Ordering::Less,
             (None, Some(_)) => std::cmp::Ordering::Greater,
             (None, None) => a
+                .target_path_ref(graph)
+                .unwrap()
+                .cmp(b.target_path_ref(graph).unwrap()),
+        }
+    }
+}
+
+pub struct GraphOrderComparer {
+    edge_field: String,
+}
+
+impl GraphOrderComparer {
+    pub fn new(edge_field: String) -> Self {
+        GraphOrderComparer {
+            edge_field,
+        }
+    }
+}
+
+impl EdgeComparer for GraphOrderComparer {
+    fn compare(&self, graph: &NoteGraph, a: &EdgeStruct, b: &EdgeStruct) -> std::cmp::Ordering {
+        let edge_field: &str = &self.edge_field;
+        let a_then_b = graph.int_path_exists(a.target_index, b.target_index, edge_field);
+        let b_then_a = graph.int_path_exists(a.target_index, b.target_index, edge_field);
+
+        match (a_then_b, b_then_a) {
+            (true, false) => std::cmp::Ordering::Greater,
+            (false, true) => std::cmp::Ordering::Less,
+            (true, true) | (false, false) => a
                 .target_path_ref(graph)
                 .unwrap()
                 .cmp(b.target_path_ref(graph).unwrap()),

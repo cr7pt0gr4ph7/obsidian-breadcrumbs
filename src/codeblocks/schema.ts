@@ -230,6 +230,9 @@ const build = (input: Record<string, unknown>, data: InputData) => {
 								...data.edge_fields.map(
 									(f) => `neighbour-field:${f.label}`,
 								),
+								...data.edge_fields.map(
+									(f) => `graph-order-field:${f.label}`,
+								),
 							],
 							"sort",
 						),
