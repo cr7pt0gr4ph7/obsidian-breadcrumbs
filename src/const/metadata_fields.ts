@@ -12,6 +12,9 @@ export const METADATA_FIELDS_LIST = [
 	"BC-folder-note-field",
 	"BC-folder-note-recurse",
 	//
+	"BC-item-note-field",
+	"BC-item-note-exclude-index",
+	//
 	"BC-list-note-field",
 	"BC-list-note-neighbour-field",
 	"BC-list-note-exclude-index",
@@ -62,6 +65,13 @@ export const METADATA_FIELDS_MAP: Record<
 		property_type: "checkbox",
 	},
 	//
+	"BC-item-note-field": {
+		property_type: "text",
+	},
+	"BC-item-note-exclude-index": {
+		property_type: "checkbox",
+	},
+	//
 	"BC-list-note-field": {
 		property_type: "text",
 	},
@@ -106,6 +116,9 @@ export const META_ALIAS = {
 	//
 	"folder-note-field": "BC-folder-note-field",
 	"folder-note-recurse": "BC-folder-note-recurse",
+	//
+	"item-note-field": "BC-item-note-field",
+	"item-note-exclude-index": "BC-item-note-exclude-index",
 	//
 	"list-note-field": "BC-list-note-field",
 	"list-note-neighbour-field": "BC-list-note-neighbour-field",
