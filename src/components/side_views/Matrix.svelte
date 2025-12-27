@@ -71,7 +71,7 @@
 
 			<EdgeSortIdSelector
 				cls="clickable-icon nav-action-button"
-				exclude_fields={["field", "neighbour-field:"]}
+				exclude_fields={["field", "neighbour-field:", "graph-order-field:"]}
 				bind:edge_sort_id={settings.edge_sort_id}
 			/>
 

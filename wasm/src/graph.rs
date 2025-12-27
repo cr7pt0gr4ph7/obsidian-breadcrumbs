@@ -264,6 +264,14 @@ impl NoteGraph {
         self.edge_types.iter().map(|x| x.to_string()).collect()
     }
 
+    /// Checks if `from` has a path using only the given edge type through which `to` is reachable.
+    pub fn path_exists(&self, from: String, to: String, edge_type: String) -> bool {
+        self.int_get_node_index(&from)
+            .zip(self.int_get_node_index(&to))
+            .map(|(from_index, to_index)| self.int_path_exists(from_index, to_index, &edge_type))
+            .unwrap_or(false)
+    }
+
     pub fn log(&self) {
         LOGGER.with(|l| l.info(&format!("{:#?}", self.graph)));
     }
@@ -593,6 +601,12 @@ impl NoteGraph {
 
     pub fn int_edge_types(&self) -> Vec<Rc<str>> {
         self.edge_types.iter().cloned().collect()
+    }
+
+    /// Checks if `from` has a path using only the given edge type through which `to` is reachable.
+    pub fn int_path_exists(&self, from: NGNodeIndex, to: NGNodeIndex, edge_type: &str) -> bool {
+        // TODO: Support paths consisting of multiple edges (which currently have to be simulated using transitive rules)
+        return self.int_has_edge(from, to, edge_type);
     }
 
     // ----------------

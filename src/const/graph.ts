@@ -26,7 +26,10 @@ export const SIMPLE_EDGE_SORT_FIELDS = [
 ] as const;
 type SimpleEdgeSortField = (typeof SIMPLE_EDGE_SORT_FIELDS)[number];
 
-export const COMPLEX_EDGE_SORT_FIELD_PREFIXES = ["neighbour-field"] as const;
+export const COMPLEX_EDGE_SORT_FIELD_PREFIXES =[
+	"neighbour-field",
+	"graph-order-field",
+] as const;
 export type ComplexEdgeSortFieldPrefix =
 	(typeof COMPLEX_EDGE_SORT_FIELD_PREFIXES)[number];
 
