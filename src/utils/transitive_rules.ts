@@ -16,7 +16,7 @@ export const stringify_transitive_relation = (
 		.map((attr) => url_search_params(attr, { trim_lone_param: true }))
 		.join(", ")}] ${rule.close_reversed ? "<-" : "->"} ${rule.close_field}`;
 
-const regex = /\[(.+)\]\s*(\*\s*(\d+))?(<-|->)\s*(.+)/;
+const regex = /\[(.+)\]\s*(\*\s*(\d+)\s*)?(<-|->)\s*(.+)/;
 
 export const get_transitive_rule_name = (
 	rule: Pick<
