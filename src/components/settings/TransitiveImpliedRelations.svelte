@@ -369,8 +369,8 @@
 
 							<EdgeFieldSelector
 								fields={settings.edge_fields}
-								on:select={(e) =>
-									actions.add_chain_field(rule_i, e.detail)}
+								onselect={(f) =>
+									actions.add_chain_field(rule_i, f)}
 							/>
 						</div>
 
@@ -383,8 +383,8 @@
 								field={settings.edge_fields.find(
 									(f) => f.label === rule.close_field,
 								)}
-								on:select={(e) =>
-									actions.set_close_field(rule_i, e.detail)}
+								onselect={(f) =>
+									actions.set_close_field(rule_i, f)}
 							/>
 						</div>
 
