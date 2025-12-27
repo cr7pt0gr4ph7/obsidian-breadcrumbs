@@ -38,6 +38,7 @@ function get_initial_nodes(all_files: AllFiles) {
 				new GCNodeData(
 					file.path,
 					node_aliases,
+					[],
 					true,
 					ignore_in_edges,
 					ignore_out_edges,
@@ -66,6 +67,7 @@ function get_initial_nodes(all_files: AllFiles) {
 				new GCNodeData(
 					page.file.path,
 					node_aliases,
+					[],
 					true,
 					ignore_in_edges,
 					ignore_out_edges,

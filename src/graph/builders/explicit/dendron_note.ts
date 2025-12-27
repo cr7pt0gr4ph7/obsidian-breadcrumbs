@@ -86,7 +86,7 @@ function handle_dendron_note(
 	const target_file = plugin.app.vault.getFileByPath(target_id);
 
 	if (!target_file) {
-		results.nodes.push(new GCNodeData(target_id, [], false, false, false));
+		results.nodes.push(new GCNodeData(target_id, [], [], false, false, false));
 
 		// If !target_file, we can recursively call handle_dendron_note
 		//   To add the unresolved edges along the way

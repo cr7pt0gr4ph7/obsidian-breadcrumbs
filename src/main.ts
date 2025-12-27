@@ -197,7 +197,7 @@ export default class BreadcrumbsPlugin extends Plugin {
 					if (file instanceof TFile && file.extension === "md") {
 						const batch = new BatchGraphUpdate();
 						new AddNoteGraphUpdate(
-							new GCNodeData(file.path, [], true, false, false),
+							new GCNodeData(file.path, [], [], true, false, false),
 						).add_to_batch(batch);
 						this.graph.apply_update(batch);
 					}
