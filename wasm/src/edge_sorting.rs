@@ -79,7 +79,7 @@ impl EdgeSorter {
     }
 
     pub fn sort_edges(&self, graph: &NoteGraph, edges: &mut [EdgeStruct]) -> Result<()> {
-        let comparer = self.get_edge_comparer(graph);
+        let comparer = self.get_edge_comparer();
 
         // Check that all edges are still valid. The comparers will panic on any errors.
         for edge in edges.iter() {
@@ -91,7 +91,7 @@ impl EdgeSorter {
     }
 
     pub fn sort_traversal_data(&self, graph: &NoteGraph, data: &mut [TraversalData]) -> Result<()> {
-        let comparer = self.get_edge_comparer(graph);
+        let comparer = self.get_edge_comparer();
 
         // Check that all edges are still valid. The comparers will panic on any errors.
         for datum in data.iter() {
@@ -108,7 +108,7 @@ impl EdgeSorter {
         edges: &[EdgeStruct],
         data: &mut [usize],
     ) -> Result<()> {
-        let comparer = self.get_edge_comparer(graph);
+        let comparer = self.get_edge_comparer();
 
         // Check that all edges are still valid. The comparers will panic on any errors.
         for index in data.iter() {
@@ -119,14 +119,14 @@ impl EdgeSorter {
         Ok(())
     }
 
-    fn get_edge_comparer<'a>(&self, graph: &'a NoteGraph) -> Comparer<'a> {
+    fn get_edge_comparer(&self) -> Comparer {
         match self.field.clone() {
             SortField::Path => PathComparer.into(),
             SortField::Basename => BasenameComparer.into(),
             SortField::EdgeType => EdgeTypeComparer.into(),
             SortField::Implied => ImpliedComparer.into(),
             SortField::Neighbour(neighbour_field) => {
-                NeighbourComparer::new(neighbour_field, graph).into()
+                NeighbourComparer::new(neighbour_field).into()
             }
         }
     }
@@ -163,12 +163,12 @@ pub trait EdgeComparer {
 }
 
 #[enum_dispatch(EdgeComparer)]
-pub enum Comparer<'a> {
+pub enum Comparer {
     PathComparer,
     BasenameComparer,
     EdgeTypeComparer,
     ImpliedComparer,
-    NeighbourOrdering(NeighbourComparer<'a>),
+    NeighbourOrdering(NeighbourComparer),
 }
 
 #[derive(Default)]
@@ -222,41 +222,37 @@ impl EdgeComparer for ImpliedComparer {
     }
 }
 
-pub struct NeighbourComparer<'a> {
+pub struct NeighbourComparer {
     neighbour_field: String,
-    graph: &'a NoteGraph,
 }
 
-impl<'a> NeighbourComparer<'a> {
-    pub fn new(neighbour_field: String, graph: &'a NoteGraph) -> Self {
+impl<'a> NeighbourComparer {
+    pub fn new(neighbour_field: String) -> Self {
         NeighbourComparer {
             neighbour_field,
-            graph,
         }
     }
 }
 
-impl EdgeComparer for NeighbourComparer<'_> {
+impl EdgeComparer for NeighbourComparer {
     fn compare(&self, graph: &NoteGraph, a: &EdgeStruct, b: &EdgeStruct) -> std::cmp::Ordering {
         let neighbour_field = vec![self.neighbour_field.clone()];
 
-        let a_neighbour = self
-            .graph
+        let a_neighbour = graph
             .int_iter_outgoing_edges(a.target_index)
             .find(|edge| {
                 edge.weight()
                     .matches_edge_filter_string(Some(&neighbour_field))
             })
-            .and_then(|x| self.graph.int_get_node_weight(x.target()).ok());
+            .and_then(|x| graph.int_get_node_weight(x.target()).ok());
 
-        let b_neighbour = self
-            .graph
+        let b_neighbour = graph
             .int_iter_outgoing_edges(b.target_index)
             .find(|edge| {
                 edge.weight()
                     .matches_edge_filter_string(Some(&neighbour_field))
             })
-            .and_then(|x| self.graph.int_get_node_weight(x.target()).ok());
+            .and_then(|x| graph.int_get_node_weight(x.target()).ok());
 
         match (a_neighbour, b_neighbour) {
             (Some(a_neighbour), Some(b_neighbour)) => a_neighbour.path.cmp(&b_neighbour.path),
