@@ -97,7 +97,7 @@ export const _add_explicit_edges_date_note: ExplicitEdgeBuilder = (
 			const target_file = plugin.app.vault.getFileByPath(target_id);
 			if (!target_file) {
 				results.nodes.push(
-					new GCNodeData(target_id, [], false, false, false),
+					new GCNodeData(target_id, [], [], false, false, false),
 				);
 			}
 

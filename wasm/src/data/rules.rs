@@ -63,6 +63,7 @@ impl TransitiveGraphRule {
             node_data.push(GCNodeData::new(
                 counter.to_string(),
                 vec![],
+                vec![],
                 true,
                 false,
                 false,
@@ -79,6 +80,7 @@ impl TransitiveGraphRule {
 
         node_data.push(GCNodeData::new(
             counter.to_string(),
+            vec![],
             vec![],
             true,
             false,

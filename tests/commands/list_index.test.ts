@@ -28,21 +28,21 @@ function getEdges() {
 
 function getNodes() {
 	return [
-		new GCNodeData("index.md", [], true, false, false),
-		new GCNodeData("1.md", [], true, false, false),
-		new GCNodeData("1.1.md", [], true, false, false),
-		new GCNodeData("1.1.1.md", [], true, false, false),
-		new GCNodeData("1.1.2.md", [], true, false, false),
-		new GCNodeData("1.2.md", [], true, false, false),
-		new GCNodeData("1.2.1.md", [], true, false, false),
-		new GCNodeData("1.2.2.md", [], true, false, false),
-		new GCNodeData("2.md", [], true, false, false),
-		new GCNodeData("2.1.md", [], true, false, false),
-		new GCNodeData("2.1.1.md", [], true, false, false),
-		new GCNodeData("2.1.2.md", [], true, false, false),
-		new GCNodeData("2.2.md", [], true, false, false),
-		new GCNodeData("2.2.1.md", [], true, false, false),
-		new GCNodeData("2.2.2.md", [], true, false, false),
+		new GCNodeData("index.md", [], [], true, false, false),
+		new GCNodeData("1.md", [], [], true, false, false),
+		new GCNodeData("1.1.md", [], [], true, false, false),
+		new GCNodeData("1.1.1.md", [], [], true, false, false),
+		new GCNodeData("1.1.2.md", [], [], true, false, false),
+		new GCNodeData("1.2.md", [], [], true, false, false),
+		new GCNodeData("1.2.1.md", [], [], true, false, false),
+		new GCNodeData("1.2.2.md", [], [], true, false, false),
+		new GCNodeData("2.md", [], [], true, false, false),
+		new GCNodeData("2.1.md", [], [], true, false, false),
+		new GCNodeData("2.1.1.md", [], [], true, false, false),
+		new GCNodeData("2.1.2.md", [], [], true, false, false),
+		new GCNodeData("2.2.md", [], [], true, false, false),
+		new GCNodeData("2.2.1.md", [], [], true, false, false),
+		new GCNodeData("2.2.2.md", [], [], true, false, false),
 	];
 }
 

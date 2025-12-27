@@ -167,7 +167,7 @@ const handle_neighbour_list_item = ({
 	);
 
 	if (!file) {
-		results.nodes.push(new GCNodeData(target_id, [], false, false, false));
+		results.nodes.push(new GCNodeData(target_id, [], [], false, false, false));
 	}
 
 	// NOTE: Currently no support for field overrides for neighbour-fields
@@ -249,7 +249,7 @@ export const _add_explicit_edges_list_note: ExplicitEdgeBuilder = (
 				// The node wouldn't have been added in the simple_loop if it wasn't resolved.
 				if (!source_file) {
 					results.nodes.push(
-						new GCNodeData(source_path, [], false, false, false),
+						new GCNodeData(source_path, [], [], false, false, false),
 					);
 				}
 
@@ -328,6 +328,7 @@ export const _add_explicit_edges_list_note: ExplicitEdgeBuilder = (
 						results.nodes.push(
 							new GCNodeData(
 								target_path,
+								[],
 								[],
 								false,
 								false,

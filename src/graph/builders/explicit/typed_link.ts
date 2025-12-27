@@ -38,7 +38,7 @@ export const _add_explicit_edges_typed_link: ExplicitEdgeBuilder = (
 				if (!target_file) {
 					// Unresolved nodes don't have aliases
 					results.nodes.push(
-						new GCNodeData(target_id, [], false, false, false),
+						new GCNodeData(target_id, [], [], false, false, false),
 					);
 				}
 
@@ -121,6 +121,7 @@ export const _add_explicit_edges_typed_link: ExplicitEdgeBuilder = (
 						results.nodes.push(
 							new GCNodeData(
 								target_path,
+								[],
 								[],
 								false,
 								false,

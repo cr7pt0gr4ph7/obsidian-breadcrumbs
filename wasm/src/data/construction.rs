@@ -10,6 +10,8 @@ pub struct GCNodeData {
     #[wasm_bindgen(skip)]
     pub aliases: Vec<String>,
     #[wasm_bindgen(skip)]
+    pub tags: Vec<String>,
+    #[wasm_bindgen(skip)]
     pub resolved: bool,
     #[wasm_bindgen(skip)]
     pub ignore_in_edges: bool,
@@ -23,6 +25,7 @@ impl GCNodeData {
     pub fn new(
         path: String,
         aliases: Vec<String>,
+        tags: Vec<String>,
         resolved: bool,
         ignore_in_edges: bool,
         ignore_out_edges: bool,
@@ -30,6 +33,7 @@ impl GCNodeData {
         GCNodeData {
             path,
             aliases,
+            tags,
             resolved,
             ignore_in_edges,
             ignore_out_edges,
@@ -47,6 +51,7 @@ impl GCNodeData {
         GCNodeData {
             path,
             aliases: Vec::new(),
+            tags: Vec::new(),
             resolved: false,
             ignore_in_edges: false,
             ignore_out_edges: false,

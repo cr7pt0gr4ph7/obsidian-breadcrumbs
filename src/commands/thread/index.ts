@@ -61,7 +61,7 @@ export async function thread(
 	const batch_update = new BatchGraphUpdate();
 
 	new AddNoteGraphUpdate(
-		new GCNodeData(target_file.path, [], true, false, false),
+		new GCNodeData(target_file.path, [], [], true, false, false),
 	).add_to_batch(batch_update);
 
 	new AddEdgeGraphUpdate(

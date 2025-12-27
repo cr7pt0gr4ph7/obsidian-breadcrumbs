@@ -9,6 +9,8 @@ pub struct NodeData {
     pub path: String,
     #[wasm_bindgen(getter_with_clone)]
     pub aliases: Vec<String>,
+    #[wasm_bindgen(getter_with_clone)]
+    pub tags: Vec<String>,
     pub resolved: bool,
     pub ignore_in_edges: bool,
     pub ignore_out_edges: bool,
@@ -20,6 +22,7 @@ impl NodeData {
     pub fn new(
         path: String,
         aliases: Vec<String>,
+        tags: Vec<String>,
         resolved: bool,
         ignore_in_edges: bool,
         ignore_out_edges: bool,
@@ -27,6 +30,7 @@ impl NodeData {
         NodeData {
             path,
             aliases,
+            tags,
             resolved,
             ignore_in_edges,
             ignore_out_edges,
@@ -44,6 +48,7 @@ impl NodeData {
         NodeData {
             path,
             aliases: Vec::new(),
+            tags: Vec::new(),
             resolved: false,
             ignore_in_edges: false,
             ignore_out_edges: false,
@@ -67,6 +72,7 @@ impl From<GCNodeData> for NodeData {
         NodeData {
             path: data.path,
             aliases: data.aliases,
+            tags: data.tags,
             resolved: data.resolved,
             ignore_in_edges: data.ignore_in_edges,
             ignore_out_edges: data.ignore_out_edges,
