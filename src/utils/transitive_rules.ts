@@ -16,7 +16,7 @@ export const stringify_transitive_relation = (
 		.map((attr) => url_search_params(attr, { trim_lone_param: true }))
 		.join(", ")}] ${rule.close_reversed ? "<-" : "->"} ${rule.close_field}`;
 
-const regex = /\[(.+)\]\s*(<-|->)\s*(.+)/;
+const regex = /\[(.+)\]\s*(\*\s*(\d+))?(<-|->)\s*(.+)/;
 
 export const get_transitive_rule_name = (
 	rule: Pick<
@@ -28,7 +28,8 @@ export const get_transitive_rule_name = (
 export const parse_transitive_relation = (
 	str: string,
 ): Result<
-	Pick<TransitiveRule, "chain" | "close_field" | "close_reversed">,
+	Pick<TransitiveRule, "chain" | "close_field" | "close_reversed"> &
+	Partial<Pick<TransitiveRule, "rounds">>,
 	null
 > => {
 	const match = regex.exec(str);
@@ -37,8 +38,9 @@ export const parse_transitive_relation = (
 		return fail(null);
 	} else {
 		return succ({
-			close_field: match[3],
-			close_reversed: match[2] === "<-",
+			close_field: match[5],
+			close_reversed: match[4] === "<-",
+			rounds: match[3].length > 0 ? parseInt(match[3]) : undefined,
 			chain: split_and_trim(match[1]).map((field) => ({ field })),
 		});
 	}
@@ -48,6 +50,8 @@ export const input_transitive_rule_schema = (data: { fields: EdgeField[] }) => {
 	const field_labels = data.fields.map((f) => f.label);
 
 	return z.object({
+		rounds: z.number().optional(),
+
 		chain: z.array(
 			z.object({ field: zod.schema.dynamic_enum(field_labels) }),
 		),

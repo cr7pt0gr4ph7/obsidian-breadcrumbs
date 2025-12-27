@@ -127,7 +127,7 @@
 
 			validated.forEach((r) => {
 				if (r.success) {
-					transitives.push({ ...r.data, name: "", rounds: 10 });
+					transitives.push({ name: "", rounds: 10, ...r.data });
 				}
 			});
 
@@ -464,7 +464,7 @@
 				<p>
 					Quickly add multiple rules using the shorthand syntax: <code
 					>
-						[field-one, field-two] -> close-field
+						[field-one, field-two] * rounds -> close-field
 					</code>. Each rule should be on a new line.
 				</p>
 
