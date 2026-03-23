@@ -1,5 +1,6 @@
 export const EXPLICIT_EDGE_SOURCES = [
 	"typed_link",
+	"field_fallback",
 	"tag_note",
 	"list_note",
 	"dendron_note",
