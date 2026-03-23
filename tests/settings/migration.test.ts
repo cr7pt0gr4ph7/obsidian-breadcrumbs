@@ -166,6 +166,10 @@ describe("migration", () => {
 					delimiter: ".",
 					default_field: "up",
 				},
+				field_fallbacks: {
+					enabled: false,
+					rules: [],
+				},
 			},
 			views: {
 				page: {
@@ -349,6 +353,10 @@ describe("migration", () => {
 					enabled: false,
 					delimiter: ".",
 					default_field: "up",
+				},
+				field_fallbacks: {
+					enabled: false,
+					rules: [],
 				},
 			},
 			views: {

@@ -20,6 +20,20 @@ export interface ShowNodeOptions {
 
 export type CrumbDestination = "frontmatter" | "dataview-inline";
 
+export interface FieldFallbackCondition {
+	dataview_query?: string;
+}
+
+export interface FieldFallbackFieldMap {
+	target_field: string;
+	source_fields: string[];
+}
+
+export interface FieldFallbackRule {
+	condition?: FieldFallbackCondition;
+	fields: FieldFallbackFieldMap[];
+}
+
 export interface BreadcrumbsSettings {
 	is_dirty: boolean;
 
@@ -81,6 +95,11 @@ export interface BreadcrumbsSettings {
 
 		regex_note: {
 			default_field: string;
+		};
+
+		field_fallbacks: {
+			enabled: boolean;
+			rules: FieldFallbackRule[];
 		};
 	};
 

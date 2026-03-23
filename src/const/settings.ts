@@ -118,6 +118,10 @@ export const DEFAULT_SETTINGS: BreadcrumbsSettings = {
 			default_field: "next",
 			stretch_to_existing: false,
 		},
+		field_fallbacks: {
+			enabled: false,
+			rules: [],
+		},
 	},
 
 	views: {
