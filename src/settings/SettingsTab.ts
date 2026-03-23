@@ -14,6 +14,7 @@ import { _add_settings_dendron_note } from "./DendronNoteSettings";
 import { _add_settings_edge_audit } from "./EdgeAuditSettings";
 import { _add_settings_edge_field_suggestor } from "./EdgeFieldSuggestorSettings";
 import { _add_settings_exclude_folders } from "./ExcludeFoldersSettings";
+import { _add_settings_field_fallbacks } from "./FieldFallbackSettings";
 import { _add_settings_freeze_implied_edges } from "./FreezeImpliedEdgesSettings";
 import { _add_settings_trail_view } from "./GridSettings";
 import { _add_settings_johnny_decimal_note } from "./JohnnyDecimalSettings";
@@ -143,6 +144,13 @@ export class BreadcrumbsSettingTab extends PluginSettingTab {
 				type: "group",
 				heading: "Edge sources",
 				items: [
+					{
+						type: "page",
+						id: "source-field-fallbacks",
+						name: "Field fallbacks",
+						desc: "Treat notes that share a tag as children of a parent note",
+						page: imp_page("Field fallbacks", _add_settings_field_fallbacks),
+					},
 					{
 						type: "page",
 						id: "source-tag-notes",
