@@ -80,6 +80,7 @@ export const _add_explicit_edges_typed_link: ExplicitEdgeBuilder = (
 				source_file.path,
 				field,
 				links,
+				"typed_link",
 			);
 		});
 	});
@@ -93,6 +94,7 @@ export function add_typed_edges_for_field(
 	source_path: string,
 	field: string,
 	links: string | IDataview.Link | IDataview.Link[] | null,
+	edge_source: string,
 ) {
 	ensure_is_array(links)
 		.flat()
@@ -154,7 +156,7 @@ export function add_typed_edges_for_field(
 					source_path,
 					target_path,
 					field,
-					"typed_link"
+					edge_source,
 				)
 			);
 		});
