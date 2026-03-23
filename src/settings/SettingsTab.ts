@@ -9,6 +9,7 @@ import { _add_settings_date_note } from "./DateNoteSettings";
 import { _add_settings_debug } from "./DebugSettings";
 import { _add_settings_dendron_note } from "./DendronNoteSettings";
 import { _add_settings_edge_field_suggestor } from "./EdgeFieldSuggestorSettings";
+import { _add_settings_field_fallbacks } from "./FieldFallbackSettings";
 import { _add_settings_freeze_implied_edges } from "./FreezeImpliedEdgesSettings";
 import { _add_settings_trail_view } from "./GridSettings";
 import { _add_settings_johnny_decimal_note } from "./JohnnyDecimalSettings";
@@ -89,6 +90,12 @@ export class BreadcrumbsSettingTab extends PluginSettingTab {
 		// Edge Sources
 		containerEl.createEl("hr");
 		containerEl.createEl("h3", { text: "Edge Sources" });
+
+		_add_settings_field_fallbacks(
+			plugin,
+			make_details_el(containerEl, {s: { text: "> Field Fallbacks" } })
+				.children,
+		);
 
 		_add_settings_tag_note(
 			plugin,
