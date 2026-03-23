@@ -57,6 +57,7 @@ export interface FieldFallbackFieldMap {
 }
 
 export interface FieldFallbackRule {
+	name: string;
 	condition?: FieldFallbackCondition;
 	fields: FieldFallbackFieldMap[];
 }
