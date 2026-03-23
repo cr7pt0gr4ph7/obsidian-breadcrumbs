@@ -47,6 +47,20 @@ export interface PeriodNoteConfig {
 
 export type CrumbDestination = "frontmatter" | "dataview-inline";
 
+export interface FieldFallbackCondition {
+	dataview_query?: string;
+}
+
+export interface FieldFallbackFieldMap {
+	target_field: string;
+	source_fields: string[];
+}
+
+export interface FieldFallbackRule {
+	condition?: FieldFallbackCondition;
+	fields: FieldFallbackFieldMap[];
+}
+
 export interface BreadcrumbsSettings {
 	is_dirty: boolean;
 
@@ -135,6 +149,11 @@ export interface BreadcrumbsSettings {
 		// marker, so a default_field can't be honored (it would turn every note into
 		// a DFS root). Kept as an empty object for shape symmetry.
 		traverse_note: object;
+
+		field_fallbacks: {
+			enabled: boolean;
+			rules: FieldFallbackRule[];
+		};
 	};
 
 	views: {

@@ -158,6 +158,10 @@ export const DEFAULT_SETTINGS: BreadcrumbsSettings = {
 			},
 		},
 		traverse_note: {},
+		field_fallbacks: {
+			enabled: false,
+			rules: [],
+		},
 	},
 
 	views: {
