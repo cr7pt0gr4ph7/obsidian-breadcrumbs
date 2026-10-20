@@ -4,6 +4,9 @@ import type {
 } from "src/interfaces/graph";
 import { resolve_relative_target_path } from "src/utils/obsidian";
 import { GCEdgeData, GCNodeData } from "wasm/pkg/breadcrumbs_graph_wasm";
+import type { AllFiles } from "./files";
+import type BreadcrumbsPlugin from "src/main";
+import type { CachedMetadata, TFile } from "obsidian";
 
 /** A Dataview inline field found on a line, with the span its value occupies. */
 export interface InlineField {
@@ -154,57 +157,65 @@ export const _add_explicit_edges_typed_link: ExplicitEdgeBuilder = async (
 
 	// Pass 2: body inline fields — `field:: [[value]]` on any line
 	await Promise.all(
-		(all_files.obsidian ?? []).map(
-			async ({ file, cache }) => {
-				if (file.extension !== "md") return;
-
-				// `[[wikilink]]` and `![[embed]]` land in separate cache arrays, but
-				// a Dataview field can hold either (e.g. `down:: ![[note]]`).
-				const links = [...(cache?.links ?? []), ...(cache?.embeds ?? [])];
-				if (!links.length) return;
-
-				const content = await plugin.app.vault.cachedRead(file);
-				const lines = content.split("\n");
-
-				const fields_by_line = new Map<number, InlineField[]>();
-
-				for (const link_cache of links) {
-					const line_num = link_cache.position.start.line;
-
-					let fields = fields_by_line.get(line_num);
-					if (!fields) {
-						fields = parse_inline_fields(lines[line_num] ?? "");
-						fields_by_line.set(line_num, fields);
-					}
-
-					const field = field_at_column(
-						fields,
-						link_cache.position.start.col,
-					);
-					if (!field) continue;
-					if (!field_labels.has(field)) continue;
-
-					const resolved = resolve_relative_target_path(
-						plugin.app,
-						link_cache.link,
-						file.path,
-					);
-					if (!resolved) continue;
-					const [target_id, target_file] = resolved;
-
-					if (!target_file) {
-						results.nodes.push(
-							new GCNodeData(target_id, [], false, false, false),
-						);
-					}
-
-					results.edges.push(
-						new GCEdgeData(file.path, target_id, field, "typed_link"),
-					);
-				}
-			},
-		),
+		(all_files.obsidian ?? []).map(({ file, cache }) => {
+			return add_typed_edges_for_inline_fields(plugin, field_labels, file, cache, results);
+		}),
 	);
 
 	return results;
+};
+
+async function add_typed_edges_for_inline_fields(
+	plugin: BreadcrumbsPlugin,
+	field_labels: Set<string>,
+	file: TFile,
+	cache: CachedMetadata | null,
+	results: EdgeBuilderResults,
+) {
+	if (file.extension !== "md") return;
+
+	// `[[wikilink]]` and `![[embed]]` land in separate cache arrays, but
+	// a Dataview field can hold either (e.g. `down:: ![[note]]`).
+	const links = [...(cache?.links ?? []), ...(cache?.embeds ?? [])];
+	if (!links.length) return;
+
+	const content = await plugin.app.vault.cachedRead(file);
+	const lines = content.split("\n");
+
+	const fields_by_line = new Map<number, InlineField[]>();
+
+	for (const link_cache of links) {
+		const line_num = link_cache.position.start.line;
+
+		let fields = fields_by_line.get(line_num);
+		if (!fields) {
+			fields = parse_inline_fields(lines[line_num] ?? "");
+			fields_by_line.set(line_num, fields);
+		}
+
+		const field = field_at_column(
+			fields,
+			link_cache.position.start.col,
+		);
+		if (!field) continue;
+		if (!field_labels.has(field)) continue;
+
+		const resolved = resolve_relative_target_path(
+			plugin.app,
+			link_cache.link,
+			file.path,
+		);
+		if (!resolved) continue;
+		const [target_id, target_file] = resolved;
+
+		if (!target_file) {
+			results.nodes.push(
+				new GCNodeData(target_id, [], false, false, false),
+			);
+		}
+
+		results.edges.push(
+			new GCEdgeData(file.path, target_id, field, "typed_link"),
+		);
+	}
 };
