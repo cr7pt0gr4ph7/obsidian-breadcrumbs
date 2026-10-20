@@ -168,18 +168,18 @@ export const _add_explicit_edges_typed_link: ExplicitEdgeBuilder = async (
 async function add_typed_edges_for_inline_fields(
 	plugin: BreadcrumbsPlugin,
 	field_labels: Set<string>,
-	file: TFile,
-	cache: CachedMetadata | null,
+	source_file: TFile,
+	source_cache: CachedMetadata | null,
 	results: EdgeBuilderResults,
 ) {
-	if (file.extension !== "md") return;
+	if (source_file.extension !== "md") return;
 
 	// `[[wikilink]]` and `![[embed]]` land in separate cache arrays, but
 	// a Dataview field can hold either (e.g. `down:: ![[note]]`).
-	const links = [...(cache?.links ?? []), ...(cache?.embeds ?? [])];
+	const links = [...(source_cache?.links ?? []), ...(source_cache?.embeds ?? [])];
 	if (!links.length) return;
 
-	const content = await plugin.app.vault.cachedRead(file);
+	const content = await plugin.app.vault.cachedRead(source_file);
 	const lines = content.split("\n");
 
 	const fields_by_line = new Map<number, InlineField[]>();
@@ -203,7 +203,7 @@ async function add_typed_edges_for_inline_fields(
 		const resolved = resolve_relative_target_path(
 			plugin.app,
 			link_cache.link,
-			file.path,
+			source_file.path,
 		);
 		if (!resolved) continue;
 		const [target_id, target_file] = resolved;
@@ -215,7 +215,7 @@ async function add_typed_edges_for_inline_fields(
 		}
 
 		results.edges.push(
-			new GCEdgeData(file.path, target_id, field, "typed_link"),
+			new GCEdgeData(source_file.path, target_id, field, "typed_link"),
 		);
 	}
 };
