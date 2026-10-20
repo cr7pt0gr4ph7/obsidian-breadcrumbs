@@ -124,34 +124,7 @@ export const _add_explicit_edges_typed_link: ExplicitEdgeBuilder = async (
 	// Pass 1: frontmatter wikilinks via Obsidian's metadata cache
 	all_files.obsidian?.forEach(
 		({ file: source_file, cache: source_cache }) => {
-			source_cache?.frontmatterLinks?.forEach((target_link) => {
-				// List-type properties return keys like "field.0" — take only the field name
-				const field = target_link.key.split(".")[0];
-				if (!field_labels.has(field)) return;
-
-				const resolved = resolve_relative_target_path(
-					plugin.app,
-					target_link.link,
-					source_file.path,
-				);
-				if (!resolved) return;
-				const [target_id, target_file] = resolved;
-
-				if (!target_file) {
-					results.nodes.push(
-						new GCNodeData(target_id, [], false, false, false),
-					);
-				}
-
-				results.edges.push(
-					new GCEdgeData(
-						source_file.path,
-						target_id,
-						field,
-						"typed_link",
-					),
-				);
-			});
+			add_typed_edges_for_frontmatter_fields(plugin, field_labels, source_file, source_cache, results);
 		},
 	);
 
@@ -164,6 +137,43 @@ export const _add_explicit_edges_typed_link: ExplicitEdgeBuilder = async (
 
 	return results;
 };
+
+function add_typed_edges_for_frontmatter_fields(
+	plugin: BreadcrumbsPlugin,
+	field_labels: Set<string>,
+	source_file: TFile,
+	source_cache: CachedMetadata | null,
+	results: EdgeBuilderResults,
+) {
+	source_cache?.frontmatterLinks?.forEach((target_link) => {
+		// List-type properties return keys like "field.0" — take only the field name
+		const field = target_link.key.split(".")[0];
+		if (!field_labels.has(field)) return;
+
+		const resolved = resolve_relative_target_path(
+			plugin.app,
+			target_link.link,
+			source_file.path
+		);
+		if (!resolved) return;
+		const [target_id, target_file] = resolved;
+
+		if (!target_file) {
+			results.nodes.push(
+				new GCNodeData(target_id, [], false, false, false)
+			);
+		}
+
+		results.edges.push(
+			new GCEdgeData(
+				source_file.path,
+				target_id,
+				field,
+				"typed_link"
+			)
+		);
+	});
+}
 
 async function add_typed_edges_for_inline_fields(
 	plugin: BreadcrumbsPlugin,
