@@ -10,7 +10,7 @@
 		"dev": "npm-run-all2 --parallel watch:*",
 		"clean": "rm -f main.js styles.css",
 		"build:css": "bunx tailwindcss -i ./src/styles.css -o ./styles.css --minify",
-		"build:esbuild": "tsc -noEmit -skipLibCheck && svelte-check && bun run esbuild.config.mjs production",
+		"build:esbuild": "tsc -skipLibCheck && svelte-check && bun run esbuild.config.mjs production",
 		"build": "bun run clean && bun run build:css && bun run build:esbuild",
 		"version:prod": "bun run version-bump.mjs && git add manifest.json versions.json package.json",
 		"version:beta": "bun run version-bump.mjs && git add manifest.json versions.json package.json",
