@@ -6,7 +6,7 @@
 	"scripts": {
 		"SOURCE": "https://stackoverflow.com/questions/70716940/using-tailwind-css-with-esbuild-the-process",
 		"watch:css": "bunx tailwindcss -i ./src/styles.css -o ./styles.css --watch",
-		"watch:esbuild": "bun run esbuild.config.mjs",
+		"watch:esbuild": "bun run esbuild.config.mjs dev",
 		"dev": "npm-run-all2 --parallel watch:*",
 		"clean": "rm -f main.js styles.css",
 		"build:css": "bunx tailwindcss -i ./src/styles.css -o ./styles.css --minify",
