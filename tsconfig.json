@@ -7,8 +7,8 @@
 		// `baseUrl: "."`, which TypeScript 7 removed.
 		"paths": { "*": ["./*"] },
 		"inlineSources": true,
-    "module": "ESNext",
-    "target": "ES2022",
+    	"module": "ESNext",
+		"target": "ES2022",
 		"allowJs": true,
 		"noImplicitAny": true,
 		"importHelpers": true,
@@ -16,7 +16,7 @@
 		"strictNullChecks": true,
 		"skipLibCheck": true,
 		"verbatimModuleSyntax": true,
-    "lib": ["DOM", "ES2022"]
+		"lib": ["DOM", "ES2022"]
 	},
 	"include": ["**/*.ts", "**/*.svelte"]
 }
