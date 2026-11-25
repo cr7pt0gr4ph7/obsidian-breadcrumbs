@@ -1,0 +1,10 @@
+{
+	"extends": "./tsconfig.json",
+	"compilerOptions": {
+		"rootDir": "src",
+		"outDir": "../../../dist/lib/breadcrumbs/lib",
+		"declaration": true,
+		"emitDeclarationOnly": true,
+	},
+	"include": ["src/**/*.ts", "src/**/*.svelte"]
+}
