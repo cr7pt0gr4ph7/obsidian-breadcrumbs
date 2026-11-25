@@ -18,7 +18,7 @@ const context = await esbuild.context({
 	banner: {
 		js: banner,
 	},
-	entryPoints: ["src/main.ts"],
+	entryPoints: ["src/index.ts"],
 	bundle: true,
 	external: [
 		"obsidian",
@@ -47,7 +47,7 @@ const context = await esbuild.context({
 	minify: prod,
 	metafile: true,
 	treeShaking: true,
-	outfile: "main.js",
+	outfile: "../../../dist/lib/breadcrumbs/lib/index.js",
 	conditions: ["browser", prod ? "production" : "development"],
 	plugins: [
 		esbuildSvelte({
