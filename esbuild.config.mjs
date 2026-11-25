@@ -16,6 +16,7 @@ const prod = process.argv[2] === "production";
 const dev = process.argv[2] === "dev";
 
 const context = await esbuild.context({
+	platform: "node",
 	banner: {
 		js: banner,
 	},
@@ -49,7 +50,7 @@ const context = await esbuild.context({
 	metafile: true,
 	treeShaking: true,
 	outfile: "../../../dist/lib/breadcrumbs/lib/index.js",
-	conditions: ["browser", prod ? "production" : "development"],
+	conditions: [prod ? "production" : "development"],
 	plugins: [
 		esbuildSvelte({
 			cache: false,
