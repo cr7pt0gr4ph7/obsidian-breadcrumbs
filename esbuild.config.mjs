@@ -13,6 +13,7 @@ if you want to view the source, please visit the github repository of this plugi
 `;
 
 const prod = process.argv[2] === "production";
+const dev = process.argv[2] === "dev";
 
 const context = await esbuild.context({
 	banner: {
@@ -63,6 +64,6 @@ if (prod) {
 	const result = await context.rebuild();
 	await fs.writeFile("meta.txt", JSON.stringify(result.metafile, null, "\t"));
 	process.exit(0);
-} else {
+} else if (dev) {
 	await context.watch();
 }
